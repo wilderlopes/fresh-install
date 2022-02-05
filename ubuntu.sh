@@ -7,16 +7,22 @@
 #
 # The steps below assume the ssh are already present in the new system.
 
+echo ">>> FRESH INSTALL OF UBUNTU 20.04"
+
 #  Update and install dependencies ------------------------------------------------------
+echo ">>> apt update and install packages"
 sudo apt-get update && sudo apt-get install -y \
 	vim \
 	git \
 	curl \
 	build-essential \
 	cmake \
-    linux-headers-$(uname -r)
+    linux-headers-$(uname -r) \
+    python3-dev \
+    python3-pip
 
 # Clone linux scripts from Github -------------------------------------------------------
+echo ">>> Clone repos from GitHub"
 cd /home/wilder && \
     git clone git@github.com:wilderlopes/my-scripts.git && \
     git clone git@github.com:wilderlopes/my-dotfiles.git
@@ -24,6 +30,7 @@ cd /home/wilder && \
 echo 'export PATH="/home/wilder/my-scripts":$PATH' >> /home/wilder/.bashrc
 
 # Copy dotfiles to home folder ----------------------------------------------------------
+echo ">>> Set up dotfiles"
 cp my-dotfiles/.vimrc .
 cp my-dotfiles/.bash_aliases .
 
@@ -37,11 +44,11 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
 sudo apt-get update && sudo apt-get install -y nvidia-docker2
 sudo systemctl restart docker
 
-# Add user to docker group to enable using docker without sudo --------------------------
-sudo usermod -aG docker $USER && newgrp docker
+# Add user to docker group to enable using docker without sudo (after logout and login)
+sudo usermod -aG docker $USER
 
 echo ">>> Run Docker hello-world"
-docker run hello-world
+sudo docker run hello-world
 
 # Install Nvidia toolkit (CUDA) ---------------------------------------------------------
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
@@ -52,3 +59,6 @@ sudo apt-key add /var/cuda-repo-ubuntu2004-11-6-local/7fa2af80.pub
 sudo apt-get update
 sudo apt-get -y install cuda
 
+# Install ML utilities ------------------------------------------------------------------
+echo ">>> Install ML utilities"
+pip install numpy tensorflow tensorboard
