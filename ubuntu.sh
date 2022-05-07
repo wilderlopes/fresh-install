@@ -28,6 +28,7 @@ cd /home/wilder && \
     git clone git@github.com:wilderlopes/my-dotfiles.git
 
 echo 'export PATH="/home/wilder/my-scripts":$PATH' >> /home/wilder/.bashrc
+source /home/wilder/.bashrc
 
 # Copy dotfiles to home folder ----------------------------------------------------------
 echo ">>> Set up dotfiles"
@@ -46,6 +47,7 @@ sudo systemctl restart docker
 
 # Add user to docker group to enable using docker without sudo (after logout and login)
 sudo usermod -aG docker $USER
+newgrp docker
 
 echo ">>> Run Docker hello-world"
 sudo docker run hello-world
