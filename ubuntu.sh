@@ -27,7 +27,8 @@ cd /home/wilder && \
     git clone git@github.com:wilderlopes/my-scripts.git && \
     git clone git@github.com:wilderlopes/my-dotfiles.git
 
-echo 'export PATH="/home/wilder/my-scripts":$PATH' >> /home/wilder/.bashrc
+echo 'export PATH="$HOME/my-scripts":$PATH' >> /home/wilder/.bashrc
+echo 'export PATH="$HOME/.local/bin":$PATH' >> /home/wilder/.bashrc
 source /home/wilder/.bashrc
 
 # Copy dotfiles to home folder ----------------------------------------------------------
