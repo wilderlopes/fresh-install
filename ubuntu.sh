@@ -12,7 +12,7 @@ echo ">>> FRESH INSTALL OF UBUNTU 20.04"
 #  Update and install dependencies ------------------------------------------------------
 echo ">>> apt update and install packages"
 sudo apt-get update && sudo apt-get install -y \
-	vim \
+	neovim \
 	git \
 	curl \
 	build-essential \
