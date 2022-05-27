@@ -23,7 +23,11 @@ sudo apt-get update && sudo apt-get install -y \
         linux-headers-$(uname -r) \
         python3-dev \
         python3-pip
-	
+
+# Git config ----------------------------------------------------------------------------
+git config user.name "Wilder Lopes"
+git config user.email "wilder@ogarantia.com"
+
 # Clone linux scripts from Github -------------------------------------------------------
 echo ">>> Clone repos from GitHub"
 cd /home/wilder && \
@@ -38,6 +42,10 @@ source /home/wilder/.bashrc
 echo ">>> Set up dotfiles"
 cp my-dotfiles/.vimrc .
 cp my-dotfiles/.bash_aliases .
+
+# Set up neovim -------------------------------------------------------------------------
+mkdir -p ~/.config/neovim
+cp ~/my-dotffiles/init.vim ~/.config/neovim/
 
 # Install Docker engine and Nvidia Docker -----------------------------------------------
 sudo mkdir -p /etc/apt/keyrings
