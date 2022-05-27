@@ -17,10 +17,13 @@ sudo apt-get update && sudo apt-get install -y \
 	curl \
 	build-essential \
 	cmake \
-    linux-headers-$(uname -r) \
-    python3-dev \
-    python3-pip
-
+	ca-certificates \
+        gnupg \
+        lsb-release \
+        linux-headers-$(uname -r) \
+        python3-dev \
+        python3-pip
+	
 # Clone linux scripts from Github -------------------------------------------------------
 echo ">>> Clone repos from GitHub"
 cd /home/wilder && \
@@ -37,18 +40,18 @@ cp my-dotfiles/.vimrc .
 cp my-dotfiles/.bash_aliases .
 
 # Install Docker engine and Nvidia Docker -----------------------------------------------
-curl https://get.docker.com | sh && sudo systemctl --now enable docker
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-    && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
-    && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
-sudo apt-get update && sudo apt-get install -y nvidia-docker2
-sudo systemctl restart docker
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  
+sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 # Add user to docker group to enable using docker without sudo (after logout and login)
-sudo usermod -aG docker $USER
 newgrp docker
+sudo usermod -aG docker $USER
 
 echo ">>> Run Docker hello-world"
 sudo docker run hello-world
